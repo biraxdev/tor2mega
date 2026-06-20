@@ -987,3 +987,391 @@ TOR2MEGA ne doit pas être conçu comme une extension.
 TOR2MEGA doit être conçu comme une plateforme cloud vidéo complète.
 
 Les extensions et applications sont simplement différentes portes d'entrée vers la même bibliothèque vidéo personnelle.
+
+# TOR2MEGA — MASTER PRODUCT + UX SPEC + FINAL MOCK
+
+## 1. PRODUIT FINAL (VISION UNIQUE)
+
+TOR2MEGA est une **plateforme de cloud vidéo personnel multi-appareils**.
+
+Objectif :
+
+Permettre à un utilisateur de :
+
+* capturer une vidéo depuis n’importe quel site
+* l’envoyer en 1 clic
+* la retrouver dans une bibliothèque centralisée
+* la visionner instantanément (stream)
+* la gérer (organiser, supprimer, télécharger)
+
+Tout est synchronisé :
+Web + Extension + Android + PWA
+
+---
+
+## 2. CORE PRINCIPLE UX
+
+Règle fondamentale :
+
+> 1 action = 1 résultat
+
+L’utilisateur ne doit jamais :
+
+* télécharger manuellement
+* re-uploader
+* configurer un stockage
+* comprendre l’infrastructure
+
+---
+
+## 3. USER FLOW ULTRA SIMPLE
+
+### FLOW PRINCIPAL
+
+```text
+User on video page
+→ Right click OR extension button
+→ "Send to Library"
+→ Background processing
+→ Video appears in TOR2MEGA Library
+→ Watch instantly
+```
+
+---
+
+## 4. UX EXTENSION (TOR + CHROME)
+
+### ICON CLICK (ULTRA IMPORTANT)
+
+Popup minimal :
+
+```
+TOR2MEGA
+────────────
+
+● Add to Library
+● Open Library
+● Open Dashboard
+● Downloads Queue
+```
+
+---
+
+### RIGHT CLICK MENU
+
+```
+Send to TOR2MEGA
+Add & Open
+Copy Video Link
+```
+
+---
+
+### STATE FEEDBACK
+
+After click :
+
+```
+✔ Added to queue
+Processing...
+```
+
+No more interactions required.
+
+---
+
+## 5. WEB DASHBOARD UX
+
+URL :
+
+```
+https://app.tor2mega.com
+```
+
+---
+
+## 5.1 MAIN LAYOUT
+
+```
+┌──────────────────────────────┐
+│ Sidebar        │ Content     │
+│────────────────│────────────│
+│ Dashboard      │            │
+│ Library        │  Video Grid │
+│ Browser        │            │
+│ Downloads      │            │
+│ Settings       │            │
+└──────────────────────────────┘
+```
+
+---
+
+## 5.2 DASHBOARD (HOME)
+
+Cards :
+
+* Total Videos
+* Processing
+* Storage Used
+* Recently Added
+
+---
+
+## 5.3 VIDEO LIBRARY (CORE SCREEN)
+
+### GRID VIEW
+
+```
+[ Thumbnail ]  Title
+Duration       Size
+[ Watch ] [ Download ] [ Delete ]
+```
+
+Hover effect :
+
+* Quick play
+* Quick actions
+
+---
+
+### LIST VIEW (OPTION)
+
+```
+Title | Size | Date | Status | Actions
+```
+
+---
+
+## 5.4 VIDEO PLAYER
+
+Full screen UI :
+
+```
+┌──────────────────────┐
+│      VIDEO           │
+├──────────────────────┤
+│ Play / Pause         │
+│ Seek bar             │
+│ Speed control        │
+│ Fullscreen           │
+└──────────────────────┘
+```
+
+Features :
+
+* instant start
+* resume playback
+* adaptive quality
+
+---
+
+## 5.5 BUILT-IN BROWSER (KEY FEATURE)
+
+Layout :
+
+```
+┌───────────────┬──────────────────────┐
+│ Sidebar       │ Browser Window       │
+│───────────────│──────────────────────│
+│ Library       │ URL Bar              │
+│ Browser       │ Web Content          │
+│ Downloads     │ Video Detector       │
+└───────────────┴──────────────────────┘
+```
+
+When video detected :
+
+```
+[ Add to Library ]
+```
+
+One click import.
+
+---
+
+## 6. DOWNLOAD SYSTEM UX
+
+Page :
+
+```
+Downloads Queue
+```
+
+Each item :
+
+```
+Video Title
+Progress Bar
+Status: Downloading / Uploading / Done
+Speed
+ETA
+```
+
+---
+
+## 7. MOBILE / ANDROID UX
+
+### HOME
+
+```
+TOR2MEGA
+────────────
+
+Library
+Downloads
+Search
+Settings
+```
+
+---
+
+### VIDEO GRID
+
+Same structure as web
+
+Tap → Instant playback
+
+---
+
+### ACTION SHEET
+
+```
+Play
+Download
+Delete
+Share
+```
+
+---
+
+## 8. NOTIFICATION SYSTEM
+
+Events :
+
+* Video added
+* Processing started
+* Upload complete
+* Error
+
+Channels :
+
+* Web push
+* Android push
+
+---
+
+## 9. PERFORMANCE PRINCIPLES
+
+* Instant UI feedback (<200ms)
+* Background processing only
+* No blocking UI
+* Lazy loading thumbnails
+* Streaming-first design
+
+---
+
+## 10. BACKEND FLOW
+
+```
+Video URL
+→ Queue
+→ Downloader (yt-dlp)
+→ Processor (ffmpeg)
+→ Upload (Mega)
+→ Store metadata
+→ Notify client
+```
+
+---
+
+## 11. DATA MODEL (SIMPLIFIED)
+
+### VIDEO
+
+```
+id
+user_id
+title
+thumbnail
+duration
+size
+source_url
+storage_url
+status
+created_at
+```
+
+---
+
+### USER
+
+```
+id
+email
+password_hash
+plan
+created_at
+```
+
+---
+
+## 12. FINAL UX MOCK (GLOBAL VIEW)
+
+### FULL SYSTEM OVERVIEW
+
+```
+┌────────────────────────────────────────────┐
+│                TOR2MEGA                    │
+├────────────────────────────────────────────┤
+│ EXTENSION     │ WEB DASHBOARD             │
+│───────────────│───────────────────────────│
+│ Right click   │ Library (Grid)           │
+│ Add to cloud  │ Video Player             │
+│ Queue status   │ Built-in Browser         │
+│               │ Downloads                │
+│               │ Settings                 │
+├────────────────────────────────────────────┤
+│               BACKEND ENGINE               │
+│ Video fetch → Processing → Upload → Sync   │
+├────────────────────────────────────────────┤
+│            ANDROID / PWA CLIENTS           │
+│ Same library, same videos, same sync       │
+└────────────────────────────────────────────┘
+```
+
+---
+
+## 13. UX GOLDEN RULES
+
+* 1 click add
+* 0 configuration
+* 0 friction
+* instant feedback
+* library-first design
+
+---
+
+## 14. FINAL PRODUCT DEFINITION
+
+TOR2MEGA is NOT :
+
+* a downloader
+* a browser extension
+* a Mega tool
+
+TOR2MEGA IS :
+
+> a unified personal video cloud system
+
+---
+
+## 15. SUCCESS CRITERIA
+
+User can:
+
+1. See video on any site
+2. Click once
+3. Forget about it
+4. Find it later in library
+5. Watch instantly anywhere
+

@@ -2,7 +2,7 @@ import { Queue } from "bullmq";
 import IORedis from "ioredis";
 import { config } from "../config";
 
-export const redisConnection = config.redis.url
+export const redisConnection: any = config.redis.url
   ? new IORedis(config.redis.url, { maxRetriesPerRequest: null })
   : new IORedis({
       host: config.redis.host,
@@ -12,7 +12,7 @@ export const redisConnection = config.redis.url
     });
 
 export const downloadQueue = new Queue("download_queue", {
-  connection: redisConnection,
+  connection: redisConnection as any,
   defaultJobOptions: {
     attempts: config.download.retryCount,
     backoff: { type: "exponential", delay: 5000 },
@@ -22,7 +22,7 @@ export const downloadQueue = new Queue("download_queue", {
 });
 
 export const uploadQueue = new Queue("upload_queue", {
-  connection: redisConnection,
+  connection: redisConnection as any,
   defaultJobOptions: {
     attempts: config.download.retryCount,
     backoff: { type: "exponential", delay: 5000 },
@@ -32,7 +32,7 @@ export const uploadQueue = new Queue("upload_queue", {
 });
 
 export const cleanupQueue = new Queue("cleanup_queue", {
-  connection: redisConnection,
+  connection: redisConnection as any,
   defaultJobOptions: {
     attempts: 1,
     removeOnComplete: 50,

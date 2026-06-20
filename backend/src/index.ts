@@ -54,15 +54,15 @@ async function main() {
   setSocketIO(io);
 
   const downloadWorker = new Worker("download_queue", processDownloadJob, {
-    connection: redisConnection,
+    connection: redisConnection as any,
     concurrency: config.download.maxConcurrent,
   });
   const uploadWorker = new Worker("upload_queue", processUploadJob, {
-    connection: redisConnection,
+    connection: redisConnection as any,
     concurrency: config.download.maxUploads,
   });
   const cleanupWorker = new Worker("cleanup_queue", processCleanupJob, {
-    connection: redisConnection,
+    connection: redisConnection as any,
     concurrency: 1,
   });
 

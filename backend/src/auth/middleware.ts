@@ -23,5 +23,5 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
 }
 
 export function signToken(userId: string): string {
-  return jwt.sign({ userId }, config.jwt.secret, { expiresIn: config.jwt.expiresIn });
+  return jwt.sign({ userId }, config.jwt.secret, { expiresIn: config.jwt.expiresIn } as any);
 }

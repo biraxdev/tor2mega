@@ -38,7 +38,7 @@ export async function uploadToMega(
     const stream = createReadStream(filePath);
     
     await new Promise<void>((resolve, reject) => {
-      const uploadHandle = mega.File.uploadToRequest(
+      const uploadHandle = (mega.File as any).uploadToRequest(
         fileRequestUrl,
         stream,
         { name: filename },
@@ -50,7 +50,7 @@ export async function uploadToMega(
 
       if (uploadHandle && onProgress) {
         let uploaded = 0;
-        stream.on("data", (chunk: Buffer) => {
+        stream.on("data", (chunk: any) => {
           uploaded += chunk.length;
           const percent = Math.round((uploaded / totalSize) * 100);
           onProgress({ percent, uploaded, total: totalSize });
@@ -112,7 +112,7 @@ async function uploadToMegaDirect(
   
   // Create AES-CTR cipher for file data
   const cipher = createCipher("aes-256-ctr", fileKey);
-  cipher.setIVOnly(iv);
+  (cipher as any).setIVOnly(iv);
 
   // Step 3: Upload encrypted data
   const uploadUrl = `${frData.p}/0`;
@@ -120,7 +120,7 @@ async function uploadToMegaDirect(
   const encryptedStream = stream.pipe(cipher);
 
   let uploaded = 0;
-  stream.on("data", (chunk: Buffer) => {
+  stream.on("data", (chunk: any) => {
     uploaded += chunk.length;
     if (onProgress) {
       onProgress({
@@ -133,7 +133,7 @@ async function uploadToMegaDirect(
 
   const uploadResponse = await fetch(uploadUrl, {
     method: "POST",
-    body: encryptedStream,
+    body: encryptedStream as any,
     headers: {
       "Content-Length": String(totalSize),
     },

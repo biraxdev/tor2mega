@@ -1,0 +1,42 @@
+{
+  "manifest_version": 2,
+  "name": "TOR2MEGA",
+  "version": "1.0.0",
+  "description": "Send videos directly to Mega from Tor Browser",
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "activeTab",
+    "notifications",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": "assets/icon.svg",
+    "default_title": "TOR2MEGA"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "48": "assets/icon.svg",
+    "96": "assets/icon.svg"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "tor2mega@tor2mega.local",
+      "strict_min_version": "91.0"
+    }
+  }
+}

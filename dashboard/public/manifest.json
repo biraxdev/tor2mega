@@ -1,0 +1,20 @@
+{
+  "name": "TOR2MEGA — Personal Video Cloud",
+  "short_name": "TOR2MEGA",
+  "description": "Your personal video cloud. Store, stream, and manage videos from anywhere.",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f0f17",
+  "theme_color": "#6d28d9",
+  "categories": ["productivity", "entertainment", "utilities"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

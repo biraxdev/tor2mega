@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "TOR2MEGA",
+    "slug": "tor2mega",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "tor2mega",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#0f0f17"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tor2mega.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#6d28d9"
+      },
+      "package": "com.tor2mega.app"
+    },
+    "plugins": ["expo-secure-store"]
+  }
+}

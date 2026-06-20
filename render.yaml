@@ -1,0 +1,43 @@
+services:
+  - type: postgres
+    name: tor2mega-db
+    plan: free
+    database: tor2mega
+    user: tor2mega
+    ipAllowList: []
+
+  - type: redis
+    name: tor2mega-redis
+    plan: free
+    ipAllowList: []
+
+  - type: web
+    name: tor2mega-api
+    plan: free
+    env: node
+    region: oregon
+    rootDir: backend
+    buildCommand: apt-get update && apt-get install -y ffmpeg && pip install yt-dlp && npm install && npm run build
+    startCommand: npm run migrate && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tor2mega-db
+          property: connectionString
+      - key: REDIS_HOST
+        fromService:
+          type: redis
+          name: tor2mega-redis
+          property: host
+      - key: REDIS_PORT
+        fromService:
+          type: redis
+          name: tor2mega-redis
+          property: port
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MEGA_FILE_REQUEST_URL
+        value: https://mega.nz/filerequest/bNDOuR4lSVo

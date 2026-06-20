@@ -17,12 +17,16 @@ services:
     env: node
     region: oregon
     rootDir: backend
-    buildCommand: apt-get update && apt-get install -y ffmpeg && pip install yt-dlp && npm install && npm run build
+    buildCommand: apt-get update && apt-get install -y ffmpeg && curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && chmod +x /usr/local/bin/yt-dlp && npm install && npm run build
     startCommand: npm run migrate && npm start
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
+      - key: YT_DLP_PATH
+        value: /usr/local/bin/yt-dlp
+      - key: FFMPEG_PATH
+        value: /usr/bin/ffmpeg
       - key: DATABASE_URL
         fromDatabase:
           name: tor2mega-db

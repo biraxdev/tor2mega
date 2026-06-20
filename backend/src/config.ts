@@ -10,6 +10,7 @@ export const config = {
     "postgresql://tor2mega:tor2mega@localhost:5432/tor2mega",
 
   redis: {
+    url: process.env.REDIS_URL || undefined,
     host: process.env.REDIS_HOST || "localhost",
     port: parseInt(process.env.REDIS_PORT || "6379", 10),
     password: process.env.REDIS_PASSWORD || undefined,

@@ -1,15 +1,17 @@
-services:
-  - type: psql
-    name: tor2mega-db
-    plan: free
-    database: tor2mega
+databases:
+  - name: tor2mega-db
+    databaseName: tor2mega
     user: tor2mega
-    ipAllowList: []
+    plan: free
 
-  - type: redis
+services:
+  - type: web
     name: tor2mega-redis
     plan: free
-    ipAllowList: []
+    env: docker
+    region: oregon
+    dockerfilePath: ./Dockerfile.redis
+    autoDeploy: true
 
   - type: web
     name: tor2mega-api
@@ -31,16 +33,11 @@ services:
         fromDatabase:
           name: tor2mega-db
           property: connectionString
-      - key: REDIS_HOST
+      - key: REDIS_URL
         fromService:
-          type: redis
+          type: web
           name: tor2mega-redis
-          property: host
-      - key: REDIS_PORT
-        fromService:
-          type: redis
-          name: tor2mega-redis
-          property: port
+          property: hostport
       - key: JWT_SECRET
         generateValue: true
       - key: MEGA_FILE_REQUEST_URL

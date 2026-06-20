@@ -2,12 +2,14 @@ import { Queue } from "bullmq";
 import IORedis from "ioredis";
 import { config } from "../config";
 
-export const redisConnection = new IORedis({
-  host: config.redis.host,
-  port: config.redis.port,
-  password: config.redis.password,
-  maxRetriesPerRequest: null,
-});
+export const redisConnection = config.redis.url
+  ? new IORedis(config.redis.url, { maxRetriesPerRequest: null })
+  : new IORedis({
+      host: config.redis.host,
+      port: config.redis.port,
+      password: config.redis.password,
+      maxRetriesPerRequest: null,
+    });
 
 export const downloadQueue = new Queue("download_queue", {
   connection: redisConnection,

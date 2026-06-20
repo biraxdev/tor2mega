@@ -10,6 +10,7 @@ headers = []
 publish = "C:\\Projects\\TOR2MEGA\\dashboard\\dist"
 publishOrigin = "config"
 commandOrigin = "config"
+base = "C:\\Projects\\TOR2MEGA\\dashboard"
 command = "npm run build"
 
 [build.environment]
@@ -25,6 +26,18 @@ command = "npm run build"
 [build.processing.js]
 
 [build.services]
+
+[[redirects]]
+from = "/api/*"
+to = "https://tor2mega-api.onrender.com/api/:splat"
+status = 200.0
+force = true
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
 
 [[redirects]]
 from = "/*"

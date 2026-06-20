@@ -6,14 +6,6 @@ databases:
 
 services:
   - type: web
-    name: tor2mega-redis
-    plan: free
-    env: docker
-    region: oregon
-    dockerfilePath: ./Dockerfile.redis
-    autoDeploy: true
-
-  - type: web
     name: tor2mega-api
     plan: free
     env: node
@@ -34,10 +26,7 @@ services:
           name: tor2mega-db
           property: connectionString
       - key: REDIS_URL
-        fromService:
-          type: web
-          name: tor2mega-redis
-          property: hostport
+        sync: false
       - key: JWT_SECRET
         generateValue: true
       - key: MEGA_FILE_REQUEST_URL

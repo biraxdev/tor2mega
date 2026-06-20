@@ -1,5 +1,5 @@
 services:
-  - type: postgres
+  - type: psql
     name: tor2mega-db
     plan: free
     database: tor2mega

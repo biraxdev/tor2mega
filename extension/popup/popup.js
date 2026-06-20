@@ -1,8 +1,8 @@
-let SITE_BASE = "http://localhost:3000";
+let SITE_BASE = "https://tor2web.netlify.app";
 let queueCount = 0;
 
-browser.storage.local.get(["apiUrl", "apiToken"]).then((result) => {
-  if (result.apiUrl) SITE_BASE = result.apiUrl.replace(/\/$/, "");
+browser.storage.local.get(["apiUrl", "apiToken", "dashboardUrl"]).then((result) => {
+  if (result.dashboardUrl) SITE_BASE = result.dashboardUrl.replace(/\/$/, "");
   if (!result.apiToken) {
     document.getElementById("no-token").style.display = "block";
     document.getElementById("main").style.display = "none";

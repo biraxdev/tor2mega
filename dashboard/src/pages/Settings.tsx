@@ -49,6 +49,7 @@ export default function Settings() {
       {error && <div className="bg-red-900/30 border border-red-800 text-red-300 text-sm rounded-lg p-3 mb-4">{error}</div>}
 
       <form onSubmit={save} className="bg-gray-900 rounded-xl p-5 border border-gray-800 space-y-4 mb-6">
+        <h2 className="text-sm font-semibold text-gray-400 uppercase">Download Configuration</h2>
         {fields.map((field) => (
           <div key={field.key}>
             <label className="block text-sm text-gray-400 mb-1">{field.label}</label>
@@ -60,6 +61,16 @@ export default function Settings() {
             />
           </div>
         ))}
+        <div>
+          <label className="block text-sm text-gray-400 mb-1">Mega File Request URL</label>
+          <input
+            type="text"
+            value={settings.mega_file_request_url || ""}
+            onChange={(e) => setSettings({ ...settings, mega_file_request_url: e.target.value })}
+            className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-brand"
+            placeholder="https://mega.nz/filerequest/..."
+          />
+        </div>
         <div className="flex items-center gap-3">
           <button type="submit" className="bg-brand hover:bg-brand-dark text-white px-4 py-2 rounded-lg text-sm font-semibold">Save Settings</button>
           {saved && <span className="text-green-400 text-sm">Saved!</span>}

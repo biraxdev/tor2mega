@@ -1,8 +1,10 @@
-let SITE_BASE = "http://localhost:3000";
+let SITE_BASE = "https://tor2web.netlify.app";
+let API_BASE = "https://tor2mega-api.onrender.com";
 let queueCount = 0;
 
-chrome.storage.local.get(["apiUrl", "apiToken"]).then((result) => {
-  if (result.apiUrl) SITE_BASE = result.apiUrl.replace(/\/$/, "");
+chrome.storage.local.get(["apiUrl", "apiToken", "dashboardUrl"]).then((result) => {
+  if (result.apiUrl) API_BASE = result.apiUrl.replace(/\/$/, "");
+  if (result.dashboardUrl) SITE_BASE = result.dashboardUrl.replace(/\/$/, "");
   if (!result.apiToken) {
     document.getElementById("no-token").style.display = "block";
     document.getElementById("main").style.display = "none";

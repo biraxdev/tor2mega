@@ -158,6 +158,7 @@ export interface Settings {
   retry_count: number;
   auto_delete_logs_days: number;
   cleanup_delay_hours: number;
+  mega_file_request_url: string;
 }
 
 export interface Video {

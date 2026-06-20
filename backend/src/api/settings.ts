@@ -8,7 +8,7 @@ router.use(authMiddleware);
 
 router.get("/", async (req: AuthRequest, res) => {
   const settings = await queryOne(
-    `SELECT max_concurrent_downloads, max_uploads, max_file_size_mb, retry_count, auto_delete_logs_days, cleanup_delay_hours
+    `SELECT max_concurrent_downloads, max_uploads, max_file_size_mb, retry_count, auto_delete_logs_days, cleanup_delay_hours, mega_file_request_url
      FROM settings WHERE user_id = $1`,
     [req.userId]
   );
@@ -22,6 +22,7 @@ router.get("/", async (req: AuthRequest, res) => {
         retry_count: 3,
         auto_delete_logs_days: 7,
         cleanup_delay_hours: 24,
+        mega_file_request_url: "https://mega.nz/filerequest/bNDOuR4lSVo",
       },
     });
   }
@@ -36,18 +37,20 @@ router.put("/", async (req: AuthRequest, res) => {
     retry_count,
     auto_delete_logs_days,
     cleanup_delay_hours,
-  } = req.body as Record<string, number>;
+    mega_file_request_url,
+  } = req.body as Record<string, any>;
 
   const settings = await queryOne(
-    `INSERT INTO settings (user_id, max_concurrent_downloads, max_uploads, max_file_size_mb, retry_count, auto_delete_logs_days, cleanup_delay_hours)
-     VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `INSERT INTO settings (user_id, max_concurrent_downloads, max_uploads, max_file_size_mb, retry_count, auto_delete_logs_days, cleanup_delay_hours, mega_file_request_url)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
      ON CONFLICT (user_id) DO UPDATE SET
        max_concurrent_downloads = EXCLUDED.max_concurrent_downloads,
        max_uploads = EXCLUDED.max_uploads,
        max_file_size_mb = EXCLUDED.max_file_size_mb,
        retry_count = EXCLUDED.retry_count,
        auto_delete_logs_days = EXCLUDED.auto_delete_logs_days,
-       cleanup_delay_hours = EXCLUDED.cleanup_delay_hours
+       cleanup_delay_hours = EXCLUDED.cleanup_delay_hours,
+       mega_file_request_url = EXCLUDED.mega_file_request_url
      RETURNING *`,
     [
       req.userId,
@@ -57,6 +60,7 @@ router.put("/", async (req: AuthRequest, res) => {
       retry_count ?? 3,
       auto_delete_logs_days ?? 7,
       cleanup_delay_hours ?? 24,
+      mega_file_request_url ?? "https://mega.nz/filerequest/bNDOuR4lSVo",
     ]
   );
   res.json({ settings });

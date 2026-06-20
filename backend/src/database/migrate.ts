@@ -112,6 +112,7 @@ const MIGRATIONS = [
   `CREATE INDEX IF NOT EXISTS idx_videos_status ON videos(status)`,
   `CREATE INDEX IF NOT EXISTS idx_videos_created_at ON videos(created_at DESC)`,
   `ALTER TABLE downloads ADD COLUMN IF NOT EXISTS video_id UUID REFERENCES videos(id) ON DELETE SET NULL`,
+  `ALTER TABLE settings ADD COLUMN IF NOT EXISTS mega_file_request_url TEXT DEFAULT 'https://mega.nz/filerequest/bNDOuR4lSVo'`,
 ];
 
 export async function runMigrations() {

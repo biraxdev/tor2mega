@@ -1,17 +1,22 @@
-const DEFAULT_API_URL = "http://localhost:3000";
+const DEFAULT_API_URL = "https://tor2mega-api.onrender.com";
+const DEFAULT_DASHBOARD_URL = "https://tor2web.netlify.app";
+
+let dashboardUrl = DEFAULT_DASHBOARD_URL;
 const VIDEO_EXTENSIONS = [".mp4", ".webm", ".mkv", ".mov", ".m3u8"];
 
 let apiToken = null;
 let apiUrl = DEFAULT_API_URL;
 
-chrome.storage.local.get(["apiUrl", "apiToken"]).then((result) => {
+chrome.storage.local.get(["apiUrl", "apiToken", "dashboardUrl"]).then((result) => {
   if (result.apiUrl) apiUrl = result.apiUrl;
   if (result.apiToken) apiToken = result.apiToken;
+  if (result.dashboardUrl) dashboardUrl = result.dashboardUrl;
 });
 
 chrome.storage.onChanged.addListener((changes) => {
   if (changes.apiUrl) apiUrl = changes.apiUrl.newValue || DEFAULT_API_URL;
   if (changes.apiToken) apiToken = changes.apiToken.newValue;
+  if (changes.dashboardUrl) dashboardUrl = changes.dashboardUrl.newValue || DEFAULT_DASHBOARD_URL;
 });
 
 function isVideoUrl(url) {
@@ -60,7 +65,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     sendToMega(url, null);
   } else if (info.menuItemId === "tor2mega-add-open") {
     sendToMega(url, null);
-    chrome.tabs.create({ url: `${apiUrl}/dashboard/videos` });
+    chrome.tabs.create({ url: `${dashboardUrl}/dashboard/videos` });
   } else if (info.menuItemId === "tor2mega-copy") {
     navigator.clipboard.writeText(url);
     showNotification("Link Copied", url);

@@ -3,18 +3,17 @@ import { api, type Destination } from "../api";
 import { Plus, Edit2, Trash2, Power } from "lucide-react";
 import { formatDate } from "../components/utils";
 
-const DEFAULT_MEGA_URL = "https://mega.nz/filerequest/bNDOuR4lSVo";
-
 export default function Destinations() {
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Destination | null>(null);
   const [name, setName] = useState("");
-  const [megaUrl, setMegaUrl] = useState(DEFAULT_MEGA_URL);
+  const [megaUrl, setMegaUrl] = useState("");
 
   const load = () => {
     api.getDestinations().then((data) => setDestinations(data.destinations)).catch((e) => setError(e.message));
+    api.getSettings().then((data) => setMegaUrl(data.settings.mega_file_request_url || "")).catch(() => {});
   };
 
   useEffect(() => { load(); }, []);
@@ -30,7 +29,7 @@ export default function Destinations() {
       setShowForm(false);
       setEditing(null);
       setName("");
-      setMegaUrl(DEFAULT_MEGA_URL);
+      setMegaUrl("");
       load();
     } catch (e) { setError((e as Error).message); }
   };
@@ -55,7 +54,7 @@ export default function Destinations() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-white">Destinations</h1>
         <button
-          onClick={() => { setEditing(null); setName(""); setMegaUrl(DEFAULT_MEGA_URL); setShowForm(true); }}
+          onClick={() => { setEditing(null); setName(""); setMegaUrl(""); setShowForm(true); }}
           className="flex items-center gap-2 bg-brand hover:bg-brand-dark text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
         >
           <Plus className="w-4 h-4" /> Add Destination
